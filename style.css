@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 800px;
+  height: 600px;
+  padding: 20px;
+  overflow: auto;
+}
+
+button {
+  padding: 10px;
+}
+
+#cookies {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+#cookies > div {
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.name {
+  width: 20%;
+}
+.value {
+  width: 30%;
+  word-break: break-all;
+}
+
+#message {
+  margin-top: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
