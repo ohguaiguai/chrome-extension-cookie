@@ -62,15 +62,20 @@ class Cookie {
 
   // 获取测试环境 cookies
   async getCookiesAndStore() {
-    const url = await this.getTabUrl();
+    const { tab, url } = await this.getTabUrl();
     const cookiesArr = await chrome.cookies.getAll({
       url: url + ''
     });
     this.setCookiesHtml(cookiesArr);
+
     chrome.storage.local.set({
       originCookies: cookiesArr,
       originUrl: url + ''
     });
+
+    // 获取 fang-roleInfo
+    chrome.tabs.sendMessage(tab.id, { msg: 'getFangInfo' });
+
     alert('获取成功, 打开开发环境同步!');
   }
   async getTabUrl() {
@@ -79,11 +84,12 @@ class Cookie {
       currentWindow: true
     });
     let url = new URL(tab.url);
-    return url;
+    return { tab, url };
   }
 
   async syncCookies() {
-    this.currentUrl = await this.getTabUrl();
+    const { tab, url } = await this.getTabUrl();
+    this.currentUrl = url;
 
     if (
       String(this.originUrl) &&
@@ -93,11 +99,14 @@ class Cookie {
       return;
     }
 
+    // 同步 fang-roleInfo
+    chrome.tabs.sendMessage(tab.id, { msg: 'setFangInfo' });
+
     const pending = this.originCookies.map((cookie) => {
       return this.syncCookie(cookie);
     });
     await Promise.all(pending);
-    alert('同步成功, 刷新页面!(无需手动粘贴 identityId)');
+    alert('同步成功, 刷新页面!(无需手动粘贴 fang-roleInfo)');
   }
 
   async syncCookie(cookie) {
@@ -113,30 +122,22 @@ class Cookie {
             url: this.originUrl + '',
             name: cookie.name,
             value: cookie.value,
+            path: cookie.path,
             secure: cookie.secure,
             sameSite: cookie.sameSite,
             expirationDate: 24 * 30 * 60 * 60 * 1000 + Date.now()
           });
         }, 0);
 
-        chrome.cookies.set(
-          {
-            url: this.currentUrl + '',
-            name: cookie.name,
-            value: cookie.value,
-            expirationDate: 24 * 30 * 60 * 60 * 1000 + Date.now()
-          },
-          () => {
-            if (cookie.name === 'Recent-Identity-Id') {
-              chrome.tabs.query(
-                { active: true, currentWindow: true },
-                function (tabs) {
-                  chrome.tabs.sendMessage(tabs[0].id, { value: cookie.value });
-                }
-              );
-            }
-          }
-        );
+        chrome.cookies.set({
+          url: this.currentUrl + '',
+          name: cookie.name,
+          value: cookie.value,
+          path: cookie.path,
+          secure: cookie.secure,
+          sameSite: cookie.sameSite,
+          expirationDate: 24 * 30 * 60 * 60 * 1000 + Date.now()
+        });
       }
     );
   }
@@ -147,7 +148,7 @@ class Cookie {
       cookiesArr
         .map(
           (cookie) =>
-            `<div><span class='name'>${cookie.name}</span><span class='value'>${cookie.value}</span></div>`
+            `<div><span class='name'>${cookie.name}</span><span class='value'>${cookie.value}</span><span>${cookie.path}</span></div><hr />`
         )
         .join('');
   }

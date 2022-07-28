@@ -1,5 +1,5 @@
 {
-  "name": "qingque-cookies",
+  "name": "ideat-cookies",
   "manifest_version": 3,
   "version": "1.0",
   "permissions": ["cookies", "storage"],
