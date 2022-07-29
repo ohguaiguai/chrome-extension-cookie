@@ -21,6 +21,9 @@ button {
 button:hover {
   cursor: pointer;
 }
+#removeCookies {
+  background-color: #f9b9b4;
+}
 
 /** Table 表格样式 **/
 h2 {
