@@ -12,35 +12,45 @@ body {
 
 button {
   padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #ddeeff;
+  margin-right: 10px;
 }
 
-#cookies {
+/** Table 表格样式 **/
+h2 {
+  padding: 10px 0;
+}
+table {
+  border-collapse: collapse;
   width: 100%;
-  height: auto;
-  margin-top: 20px;
+  border: 1px solid #c6c6c6;
+  margin-bottom: 20px;
 }
-
-#cookies > div {
-  height: auto;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+table th {
+  border-collapse: collapse;
+  border-right: 1px solid #c6c6c6;
+  border-bottom: 1px solid #c6c6c6;
+  background-color: #ddeeff;
+  padding: 5px 9px;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
 }
-
-.name {
-  width: 20%;
-}
-.value {
-  width: 30%;
+table td {
+  border-collapse: collapse;
+  border-right: 1px solid #c6c6c6;
+  border-bottom: 1px solid #c6c6c6;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: normal;
+  text-align: center;
   word-break: break-all;
 }
-
-#message {
-  margin-top: 20px;
+table tr:nth-child(odd) {
+  background-color: #fff;
 }
-
-.title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }

@@ -95,7 +95,7 @@ class Cookie {
       String(this.originUrl) &&
       this.currentUrl + '' === this.originUrl + ''
     ) {
-      alert('打开本地开发环境同步!');
+      alert('还未切换环境，打开本地开发环境!');
       return;
     }
 
@@ -106,7 +106,7 @@ class Cookie {
       return this.syncCookie(cookie);
     });
     await Promise.all(pending);
-    alert('同步成功, 刷新页面!(无需手动粘贴 fang-roleInfo)');
+    alert('同步成功, 刷新页面!');
   }
 
   async syncCookie(cookie) {
@@ -144,13 +144,26 @@ class Cookie {
 
   setCookiesHtml(cookiesArr) {
     cookiesDiv.innerHTML =
-      `<div class='title'>已经获取到的 cookies :</div>` +
+      `<thread>
+        <tr>
+          <th>name</th>
+          <th>value</th>
+          <th>path</th>
+        </tr>
+      </thread>
+      <tbody>
+      ` +
       cookiesArr
         .map(
           (cookie) =>
-            `<div><span class='name'>${cookie.name}</span><span class='value'>${cookie.value}</span><span>${cookie.path}</span></div><hr />`
+            `<tr>
+            <td>${cookie.name}</td>
+            <td>${cookie.value}</td>
+            <td>${cookie.path}</td>
+            </tr>`
         )
-        .join('');
+        .join('') +
+      `</tbody>`;
   }
 }
 
